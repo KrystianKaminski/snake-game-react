@@ -1,18 +1,13 @@
 import React from 'react'
+import GameRow from './GameRow';
 
 const GameBoard = (props) => (
     <div>
         {
             props.gameBoard.map(row => (
-                <div>
-                    {
-                        row.map(cell => (
-                            <div>
-                                {cell}
-                            </div>
-                        ))
-                    }
-                </div>
+               <GameRow
+                row={row}
+                />
             ))
         }
     </div>
