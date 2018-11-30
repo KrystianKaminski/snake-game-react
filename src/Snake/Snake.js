@@ -23,7 +23,12 @@ class Snake extends React.Component {
                     { x: halfBoardDimension - 1, y: halfBoardDimension },
                 ]
             ],
-            meals: []
+            directions: [
+                'right',
+                'left'
+            ],
+            meals: [],
+            currentPlayerIndex: 0
         }
     }
 
