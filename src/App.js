@@ -7,7 +7,7 @@ class App extends Component {
   render() {
     return (
      <Snake
-      firebaseDataase={database}
+      firebaseDatabase={database}
      />
     );
   }
