@@ -13,7 +13,7 @@ class Snake extends React.Component {
 
         this.direction = 'right'
         this.currentPlayerIndex = 0
-            
+
 
         this.state = {
             gameBoard: Array(props.boardDimension)
@@ -84,65 +84,86 @@ class Snake extends React.Component {
     }
 
     checkIfMovesAreAvailable = () => {
-            const snakeHeadPosition = this.state.snakes[this.currentPlayerIndex][0]
-            let newSnakeHeadPosition = null
+        const snakeHeadPosition = this.state.snakes[this.currentPlayerIndex][0]
+        let newSnakeHeadPosition = null
 
-            switch (this.direction) {
-                case 'left':
-                    newSnakeHeadPosition = {
-                        x: snakeHeadPosition.x - 1,
-                        y: snakeHeadPosition.y
-                    }
-                    break
-                case 'right':
-                    newSnakeHeadPosition = {
-                        x: snakeHeadPosition.x + 1,
-                        y: snakeHeadPosition.y
-                    }
-                    break
-                case 'up':
-                    newSnakeHeadPosition = {
-                        x: snakeHeadPosition.x,
-                        y: snakeHeadPosition.y - 1
-                    }
-                    break
-                case 'down':
-                    newSnakeHeadPosition = {
-                        x: snakeHeadPosition.x,
-                        y: snakeHeadPosition.y + 1
-                    }
-                    break
-                default:
-            }
+        switch (this.direction) {
+            case 'left':
+                newSnakeHeadPosition = {
+                    x: snakeHeadPosition.x - 1,
+                    y: snakeHeadPosition.y
+                }
+                break
+            case 'right':
+                newSnakeHeadPosition = {
+                    x: snakeHeadPosition.x + 1,
+                    y: snakeHeadPosition.y
+                }
+                break
+            case 'up':
+                newSnakeHeadPosition = {
+                    x: snakeHeadPosition.x,
+                    y: snakeHeadPosition.y - 1
+                }
+                break
+            case 'down':
+                newSnakeHeadPosition = {
+                    x: snakeHeadPosition.x,
+                    y: snakeHeadPosition.y + 1
+                }
+                break
+            default:
+        }
 
-            if (
-                this.currentGameBoard[newSnakeHeadPosition.y] &&
-                this.currentGameBoard[newSnakeHeadPosition.y][newSnakeHeadPosition.x]
-            ) {
-                this.checkIfIsMealOnNextMovePosition(newSnakeHeadPosition)
-            } else {
-                this.endGame()
-            }
+        if (
+            this.currentGameBoard[newSnakeHeadPosition.y] &&
+            this.currentGameBoard[newSnakeHeadPosition.y][newSnakeHeadPosition.x]
+        ) {
+            this.checkIfIsMealOnNextMovePosition(newSnakeHeadPosition)
+        } else {
+            this.endGame()
+        }
     }
 
     checkIfIsMealOnNextMovePosition = (newSnakeHeadPosition) => {
         const newMeals = this.state.meals.filter(
             mealPosition => (
                 mealPosition.x !== newSnakeHeadPosition.x ||
-                mealPosition.y !== newSnakeHeadPosition.y 
-            ) 
+                mealPosition.y !== newSnakeHeadPosition.y
+            )
         )
         if (newMeals.length === this.state.meals.length) {
+            this.moveSnake(newSnakeHeadPosition)
 
         } else {
+            this.moveSnakeOnMeal(newSnakeHeadPosition)
             this.setState({
                 meals: newMeals
             })
-            this.state.meals = newMeals
+            this.placeNewMeal()
         }
+
 
         this.moveSnake(newSnakeHeadPosition)
     }
+    //@FIXME - this is almost copy paste of moveSnake
+
+    moveSnakeOnMeal = (newSnakeHeadPosition) => {
+        const snake = this.state.snakes[this.currentPlayerIndex]
+        const snakeWithNewHead = [newSnakeHeadPosition].concat(snake)
+
+        const newSnakes = this.state.snakes.map((snake, i) => (
+            this.currentPlayerIndex === i ?
+                snakeWithNewHead
+                :
+                snake
+        ))
+
+        this.setState({
+            snakes: newSnakes
+        })
+    }
+
 
     moveSnake = (newSnakeHeadPosition) => {
         const snake = this.state.snakes[this.currentPlayerIndex]
@@ -163,10 +184,11 @@ class Snake extends React.Component {
 
     endGame = () => {
         alert(` LOST!`)
+        clearInterval(this.intervalId)
     }
 
     onArrowKeyDown = event => {
-        switch(event.key) {
+        switch (event.key) {
             case 'ArrowUp':
                 this.direction = 'up'
                 break
@@ -217,7 +239,7 @@ class Snake extends React.Component {
 Snake.defaultProps = {
     // @TODO it should be checked if bigger than eg. 5
     boardDimension: 11,
-    startGameTickTime: 1000
+    startGameTickTime: 500
 }
 
 export default Snake
