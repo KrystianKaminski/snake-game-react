@@ -15,9 +15,12 @@ class Snake extends React.Component {
                 { x: 5, y: 6 },
             ],
             [
-                {x: 0, y: 0},
-                {x: 0, y: 1},
+                { x: 0, y: 0 },
+                { x: 0, y: 1 },
             ]
+        ],
+        meals: [
+            { x: 2, y: 3 }
         ]
     }
 
@@ -30,6 +33,10 @@ class Snake extends React.Component {
                     gameBoardCopy[bodyCellPosition.y][bodyCellPosition.x] = 0
                 ))
             ))
+
+        this.state.meals.forEach(mealPosition => (
+            gameBoardCopy[mealPosition.y][mealPosition.x] = 'F'
+        ))
 
         return gameBoardCopy
     }
