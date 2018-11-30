@@ -39,15 +39,21 @@ class Snake extends React.Component {
     checkIfIsInTheMatch = () => {
         if (window.location.hash) {
             this.matchId = window.location.hash
+            this.currentPlayerIndex = 1
+            this.direction = 'left'
         } else {
             this.startNewMatch()
         }
     }
 
     startNewMatch = () => {
-       const newRef = this.props.firebaseDatabase.ref('snake-multi').push()
+       const newRef = this.props.firebaseDatabase.ref('snake-multi').push(
+           this.state
+       )
         window.location.hash = newRef.key
        this.matchId = newRef.key
+       this.currentPlayerIndex = 0
+       this.direction = 'right'
     }
 
     componentDidMount() {
@@ -158,9 +164,6 @@ class Snake extends React.Component {
             })
             this.placeNewMeal()
         }
-
-
-        this.moveSnake(newSnakeHeadPosition)
     }
     //@FIXME - this is almost copy paste of moveSnake
 
