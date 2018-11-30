@@ -9,6 +9,7 @@ class Snake extends React.Component {
         const halfBoardDimension = Math.ceil(props.boardDimension / 2) - 1
 
         this.intervalId = null
+        this.currentGameBoard = null
 
         this.state = {
             gameBoard: Array(props.boardDimension)
@@ -52,9 +53,9 @@ class Snake extends React.Component {
     }
 
     checkIfMovesAreAvailable = () => {
-        this.state.snakes.forEach((snakePositions, i) => {
+        this.state.snakes.forEach((snakePositions, snakeIndex) => {
             const snakeHeadPosition = snakePositions[0]
-            const direction = this.state.directions[i]
+            const direction = this.state.directions[snakeIndex]
             let newSnakeHeadPosition = null
 
             switch (direction) {
@@ -84,7 +85,37 @@ class Snake extends React.Component {
                     break
                 default:
             }
+
+            if (
+                this.currentGameBoard[newSnakeHeadPosition.y] &&
+                this.currentGameBoard[newSnakeHeadPosition.y][newSnakeHeadPosition.x]
+            ) {
+                this.moveSnake(snakeIndex, newSnakeHeadPosition)
+            } else {
+                this.endGame(snakeIndex)
+            }
         })
+    }
+
+    moveSnake = (snakeIndex, newSnakeHeadPosition) => {
+        const snake = this.state.snakes[snakeIndex]
+        const snakeWithoutTail = snake.slice(0, -1)
+        const snakeWithNewHead = [newSnakeHeadPosition].concat(snakeWithoutTail)
+
+        const newSnakes = this.state.snakes.map((snake, i) => (
+            snakeIndex === i ?
+                snakeWithNewHead
+                :
+                snake
+        ))
+
+        this.setState({
+            snakes: newSnakes
+        })
+    }
+
+    endGame = (snakeIndex) => {
+        alert(`SNAKE ${snakeIndex} LOST!`)
     }
 
     composeGameBoard = () => {
@@ -105,12 +136,12 @@ class Snake extends React.Component {
     }
 
     render() {
-        const gameBoard = this.composeGameBoard()
+        this.currentGameBoard = this.composeGameBoard()
 
         return (
             <div>
                 <GameBoard
-                    gameBoard={gameBoard}
+                    gameBoard={this.currentGameBoard}
                 />
             </div>
         )
