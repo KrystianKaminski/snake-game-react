@@ -7,15 +7,24 @@ const style = {
     alignItems: 'center',
 }
 
-const GameCell = (props) => (
-    <div
-        style={{
-            ...style,
-            flexBasis: 100 / props.numbersOfCells + '%'
-        }}
-    >
-        {props.cell}
-    </div>
-)
-
+const GameCell = (props) => {
+    const color = (props.cell === 0 ? 
+        'black'
+            :
+            props.cell === 'F' ?
+            'green'
+            :
+            'white'
+    )
+    return (
+        <div
+            style={{
+                ...style,
+                flexBasis: 100 / props.numbersOfCells + '%',
+                backgroundColor: color
+            }}
+        >
+        </div>
+    )
+}
 export default GameCell
