@@ -10,15 +10,29 @@ class Snake extends React.Component {
     }
 
     render() {
+        const gameBoard = JSON.parse(JSON.stringify(this.state.gameBoard))
         return (
             <div>
-                Snake
+                {
+                    gameBoard.map(row => (
+                        <div>
+                            {
+                                row.map(cell => (
+                                    <div>
+                                        {cell}
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    ))
+                }
             </div>
         )
     }
 }
 
 Snake.defaultProps = {
+    // @TODO it should be checked if bigger than eg. 5
     boardDimension: 10
 }
 

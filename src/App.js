@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import Snake from './Snake/Snake';
 
 
 class App extends Component {
   render() {
     return (
-     <div>Hello</div>
+     <Snake/>
     );
   }
 }
