@@ -5,12 +5,14 @@ const style = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexBasis: '10%'
 }
 
 const GameCell = (props) => (
     <div
-        style={style}
+        style={{
+            ...style,
+            flexBasis: 100 / props.numbersOfCells + '%'
+        }}
     >
         {props.cell}
     </div>

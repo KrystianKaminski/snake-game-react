@@ -13,6 +13,7 @@ const GameRow = (props) => (
             props.row.map(cell => (
                <GameCell
                     cell={cell}
+                    numbersOfCells={props.row.length}
                 />
             ))
         }
