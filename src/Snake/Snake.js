@@ -11,6 +11,10 @@ class Snake extends React.Component {
         this.intervalId = null
         this.currentGameBoard = null
 
+        this.direction = 'right'
+        this.currentPlayerIndex = 0
+            
+
         this.state = {
             gameBoard: Array(props.boardDimension)
                 .fill(Array(props.boardDimension)
@@ -26,12 +30,7 @@ class Snake extends React.Component {
                     { x: halfBoardDimension - 1, y: halfBoardDimension },
                 ]
             ],
-            directions: [
-                'right',
-                'left'
-            ],
             meals: [],
-            currentPlayerIndex: 0,
             gameTickTime: props.startGameTickTime
         }
     }
@@ -63,12 +62,10 @@ class Snake extends React.Component {
     }
 
     checkIfMovesAreAvailable = () => {
-        this.state.snakes.forEach((snakePositions, snakeIndex) => {
-            const snakeHeadPosition = snakePositions[0]
-            const direction = this.state.directions[snakeIndex]
+            const snakeHeadPosition = this.state.snakes[this.currentPlayerIndex][0]
             let newSnakeHeadPosition = null
 
-            switch (direction) {
+            switch (this.direction) {
                 case 'left':
                     newSnakeHeadPosition = {
                         x: snakeHeadPosition.x - 1,
@@ -81,13 +78,13 @@ class Snake extends React.Component {
                         y: snakeHeadPosition.y
                     }
                     break
-                case 'top':
+                case 'up':
                     newSnakeHeadPosition = {
                         x: snakeHeadPosition.x,
                         y: snakeHeadPosition.y - 1
                     }
                     break
-                case 'bottom':
+                case 'down':
                     newSnakeHeadPosition = {
                         x: snakeHeadPosition.x,
                         y: snakeHeadPosition.y + 1
@@ -100,20 +97,19 @@ class Snake extends React.Component {
                 this.currentGameBoard[newSnakeHeadPosition.y] &&
                 this.currentGameBoard[newSnakeHeadPosition.y][newSnakeHeadPosition.x]
             ) {
-                this.moveSnake(snakeIndex, newSnakeHeadPosition)
+                this.moveSnake(newSnakeHeadPosition)
             } else {
-                this.endGame(snakeIndex)
+                this.endGame()
             }
-        })
     }
 
-    moveSnake = (snakeIndex, newSnakeHeadPosition) => {
-        const snake = this.state.snakes[snakeIndex]
+    moveSnake = (newSnakeHeadPosition) => {
+        const snake = this.state.snakes[this.currentPlayerIndex]
         const snakeWithoutTail = snake.slice(0, -1)
         const snakeWithNewHead = [newSnakeHeadPosition].concat(snakeWithoutTail)
 
         const newSnakes = this.state.snakes.map((snake, i) => (
-            snakeIndex === i ?
+            this.currentPlayerIndex === i ?
                 snakeWithNewHead
                 :
                 snake
@@ -124,12 +120,18 @@ class Snake extends React.Component {
         })
     }
 
-    endGame = (snakeIndex) => {
-        alert(`SNAKE ${snakeIndex} LOST!`)
+    endGame = () => {
+        alert(` LOST!`)
     }
 
     onArrowKeyDown = event => {
-        console.log('ARROW')
+        switch(event.key) {
+            case 'ArrowUp':
+
+            case 'ArrowDown':
+            case 'ArrowLeft':
+            case 'ArrowRight':
+        }
     }
 
     composeGameBoard = () => {
