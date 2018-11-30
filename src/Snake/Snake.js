@@ -45,6 +45,8 @@ class Snake extends React.Component {
             'keydown',
             this.onArrowKeyDown
         )
+
+        this.placeNewMeal()
     }
 
     componentWillUnmount() {
@@ -59,6 +61,26 @@ class Snake extends React.Component {
     gameTick = () => {
         console.log('tick')
         this.checkIfMovesAreAvailable()
+    }
+
+    placeNewMeal = () => {
+        this.setState({
+            meals: this.state.meals.concat(
+                this.generateNewMealPosition()
+            )
+        })
+    }
+
+    generateNewMealPosition = () => {
+        const randomX = Math.round(Math.random() * this.props.boardDimension - 1)
+        const randomY = Math.round(Math.random() * this.props.boardDimension - 1)
+
+        // @TODO should check if no or other food snake is on that position
+
+        return {
+            x: randomX,
+            y: randomY
+        }
     }
 
     checkIfMovesAreAvailable = () => {
