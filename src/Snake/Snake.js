@@ -25,7 +25,7 @@ class Snake extends React.Component {
 
 Snake.defaultProps = {
     // @TODO it should be checked if bigger than eg. 5
-    boardDimension: 10
+    boardDimension: 20
 }
 
 export default Snake
