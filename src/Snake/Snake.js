@@ -127,10 +127,19 @@ class Snake extends React.Component {
     onArrowKeyDown = event => {
         switch(event.key) {
             case 'ArrowUp':
-
+                this.direction = 'up'
+                break
             case 'ArrowDown':
+                this.direction = 'down'
+                break
             case 'ArrowLeft':
+                this.direction = 'left'
+                break
             case 'ArrowRight':
+                this.direction = 'right'
+                break
+            default:
+
         }
     }
 
